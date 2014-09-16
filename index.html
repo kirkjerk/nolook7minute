@@ -1,0 +1,225 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>7 minute no-look workout page</title>
+
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="lowLag.js"></script>
+<script>
+    //say -v "Veena" "try cep dips" -o tricepdipa.aiff
+    //lame triangle4.wav --preset medium triangle4.mp3
+    
+var sounds,exercises;
+
+$(document).ready(function() {
+    lowLag.init({'urlPrefix':'sounds/'});
+    setupSounds();
+    setupExercises();
+});
+
+
+function setupSounds(){
+    sounds = ["1","2","3","tick","crunches","getreadyfor","go","highknees",
+    "jumpingjacks","lunges","plank","pushuprotate","pushups","sideplank",
+    "squats","stepups","switchsides","triangle4","tricepdips","wallsit","goodjob"]; 
+    
+    for(var i = 0; i <sounds.length; i++){// exercises.length
+        lowLag.load([sounds[i]+".mp3?v2"],sounds[i]);
+    }
+}
+
+function setupExercises(){
+    exercises = [
+        {"caption":"jumping jacks","sound":"jumpingjacks","switchSides":false},
+        {"caption":"wall sit","sound":"wallsit","switchSides":false},
+        {"caption":"push-up","sound":"pushups","switchSides":false},
+        {"caption":"abdominal crunch","sound":"crunches","switchSides":false},
+        {"caption":"step-up onto chair","sound":"stepups","switchSides":true},
+        {"caption":"squat","sound":"squats","switchSides":false},
+        {"caption":"tricep dip on chair","sound":"tricepdips","switchSides":false},
+        {"caption":"plank","sound":"plank","switchSides":false},
+        {"caption":"high knees running in place","sound":"highknees","switchSides":false},
+        {"caption":"lunge","sound":"lunges","switchSides":true},
+        {"caption":"push-up and rotation","sound":"pushuprotate","switchSides":true},
+        {"caption":"side plank","sound":"sideplank","switchSides":true},
+        ];
+}
+    
+function launch(){
+    for(var i = 0; i < exercises.length; i++){// exercises.length
+        $("#progzone").append("<div id='prog_"+i+"' class='prog'></div>");
+        setupExercise(i, exercises[i]);
+        
+
+        
+    }
+    var after = (1 + (exercises.length * 39)) * 1000;
+    playSoundAtTime(after ,"goodjob");
+    showCountAtTime(after,":-)");
+    showCaption(after,"good job!");
+    setTimeout(function(){$(".prog").removeClass("now").addClass("done");},after);
+    
+}
+
+function setupExercise(place,exer){
+    var basetime = place  * 1000 * 39;
+    
+    setTimeout(function(){
+console.log("TRYING "+place);
+        for(var i = 0; i < place; i++){
+            var prog = $("#prog_"+i);
+            prog.addClass("done").removeClass("now");
+        }
+         var prog = $("#prog_"+i).addClass("now");
+    },basetime);
+   
+
+    //set cartoon at first
+    showCartoonAtTime(basetime,exer.sound);
+
+    //
+    playSoundAtTime(basetime,"getreadyfor");
+    
+    playSoundAtTime(basetime + 1000, exer.sound);
+
+    playSoundAtTime(basetime + 6000, "3");
+    playSoundAtTime(basetime + 7000, "2");
+    playSoundAtTime(basetime + 8000, "1");
+    
+    
+    //drumbeat
+    for(var i = 10; i < 40; i++){
+        playSoundAtTime(basetime + 1000 * i,"tick" );
+    }
+        
+
+    //show resting time
+    for(var i = 0; i < 9; i++){
+        showCountAtTime(basetime + 1000 * i,9 - i );
+    }
+    showCaption(basetime ,"resting ("+exer.caption +" next)");
+
+    var exerstart = basetime + 9 * 1000;
+    
+    showCaption(exerstart,exer.caption);
+    
+
+
+    for(var i = 0; i < 30; i++){
+        showCountAtTime(exerstart + 1000 * i,30 - i );
+    }
+
+    if(exer.switchSides){
+        playSoundAtTime(exerstart + 14000, "switchsides");
+    } else {
+        playSoundAtTime(exerstart + 15000, "triangle4");    
+    }
+
+    
+    
+    playSoundAtTime(exerstart + 30000, "triangle4");
+
+    
+    playSoundAtTime(exerstart + 27000, "3");
+    playSoundAtTime(exerstart + 28000, "2");
+    playSoundAtTime(exerstart + 29000, "1");    
+
+    playSoundAtTime(exerstart, exer.sound);
+
+        
+}
+
+function showCountAtTime(delay,value){
+    setTimeout(function(){
+        $("#timer").html(value);
+    },delay);    
+}
+
+
+function showCartoonAtTime(delay,cartoon){
+    setTimeout(function(){
+        $("#cartoon").html('<img width="276" height="258" src="/cartoon/'+cartoon+'.png?1">');
+    },delay);
+
+}
+function showCaption(delay,caption){
+    setTimeout(function(){
+        $("#caption").html(caption);
+    },delay);
+        
+}
+
+
+
+function playSoundAtTime(delay,sound){
+    setTimeout(function(){
+        lowLag.play(sound);
+    },delay);
+}
+
+</script>
+
+<style>
+    body {
+        font-family: helvetica,arial,sans-serif;
+    }
+    h1{
+        text-align: center;
+        font-size:40px;
+    }
+    #timer {
+        font-size:200px;
+    }
+    button {
+        font-size:100px;
+        background-color: #3B00CA;
+        border:none;
+        color:white;
+        
+    }
+    #progzone {
+        
+    }
+    .prog {
+        width:50px;
+        height:50px;
+        margin:10px;
+ 
+        display:inline-block;
+        border:1px solid #cccccc;
+    }
+    .prog.done {
+        background-color:#6666FF;
+    }  
+    .prog.now {
+       background-color:#3B00CA;
+   }  
+
+
+</style>
+
+</head>
+<body>
+
+<h1>kirk's no-look 7-minute workout page</h1>
+<center>
+    <table cellpadding=0 cellspacing=0 border="0"><tr>
+        <td width="300" align="right">
+            <div style="height:258px" id="cartoon"></div>
+        </td>
+        <td width="300" align="center">
+            <div id="timer"><button onClick="launch()">go</button></div>
+        </td>
+    </tr>
+    <tr><td colspan="2">
+        <h1 id="caption"></h1>   
+    </td></tr>
+    
+    </table>
+    <center id="progzone">
+    
+    </center>
+</center>
+</body>
+</html>
