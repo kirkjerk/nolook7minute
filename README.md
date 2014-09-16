@@ -27,7 +27,14 @@ those files were then converted via LAME
 
     lame goodjob.aiff --preset medium goodjob.mp3
 
-The miscellaneous other side effects were from varios free sources.
+The miscellaneous other side effects were from various free sources.
+
+If you run this locally, you probably cannot run it directly from the filesystem and will need to use some kind of web server. If your system has python, the command
+
+    python -m SimpleHTTPServer 8081
+
+will server the current folder at http://localhost:8081/
+
 
 Future Improvements
 -------------------
