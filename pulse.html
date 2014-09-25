@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>simple pulse timer</title>
+
+<script src="jquery-1.11.0.min.js"></script>
+
+<script>
+
+$(document).ready(function(){
+    var elem = $("#bpm");
+    var times = [];
+    
+    
+    $(document).click(function(event){
+        event.stopPropagation();
+        var now = new Date().getTime();
+        
+        times.push(now);
+        var numBeats = times.length;
+        if(numBeats >= 2){
+            elem.html(now);
+            var latestLoc = times.length - 1;
+            var compareLoc = latestLoc - 5;
+            if(compareLoc < 0) compareLoc = 0;
+            var numBeatsCompare = latestLoc - compareLoc;
+            var timeDiff = times[latestLoc] - times[compareLoc];
+            var timeDiffPerBeat = timeDiff / numBeatsCompare;
+            var bpm = 60 * 1000 / timeDiffPerBeat;
+            
+            elem.html(Math.round(bpm));
+            
+        } else {
+            elem.html("---");
+        }
+        
+    });
+});
+
+
+</script>
+
+<style>
+    .noSelect {
+        -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+        -moz-user-select: none; /* mozilla browsers */
+        -khtml-user-select: none; /* webkit (konqueror) browsers */
+        -ms-user-select: none; /* IE10+ */
+    }
+    
+    body {
+        font-family: helvetica,arial,sans-serif;
+    }
+    h1{
+        text-align: center;
+        font-size:40px;
+    }
+    h2{
+        text-align: center;
+    }
+    #timer {
+        font-size:150px;
+        text-align: center;
+    }
+     a {
+        text-decoration: none;
+        color:#3B00CA;
+        
+    }
+    .footer {
+        text-align: center;
+        margin-top:60px;
+    }
+    .bluewrapper {
+        text-decoration: none;
+        background-color:#3B00CA;
+        color:white;
+    }
+</style>
+
+</head>
+<body class="noSelect">
+
+<h1>simple pulse timer</h1>
+
+<h2>click anywhere in rhythm with your pulse</h2>
+
+<div  id="timer"><span class="bluewrapper"><span  id="bpm">...</span> bpm</span></div>
+<div class="footer">
+     <a href=".">return to 7 minute workout</a>
+</div>
+</body>
+</html>
